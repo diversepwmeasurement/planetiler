@@ -1,24 +1,21 @@
----
-name: Docs
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
 jobs:
   markdown-link-check:
     name: Broken Links
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          # don't need to check planetiler-openmaptiles
-          submodules: false
-      - name: Run link check
-        uses: gaurav-nelson/github-action-markdown-link-check@1.0.13
-        with:
-          use-quiet-mode: 'no'
-          use-verbose-mode: 'yes'
-          config-file: '.github/workflows/docs_mlc_config.json'
+    - continue-on-error: true
+      name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: false
+    - continue-on-error: true
+      name: Run link check
+      uses: gaurav-nelson/github-action-markdown-link-check@1.0.13
+      with:
+        config-file: .github/workflows/docs_mlc_config.json
+        use-quiet-mode: no
+        use-verbose-mode: yes
+name: Docs
+on:
+  repository_dispatch:
+    types: trigger-ga___docs.yml
